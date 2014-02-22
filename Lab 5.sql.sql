@@ -1,4 +1,4 @@
-﻿--Kevin Bruce ----
+--Kevin Bruce ----
 ---2/21/2014----
 -----lab 5---
 
@@ -32,21 +32,22 @@ on customers.cid = orders.cid
 where orders.cid is null
 
 
-select customers.name
-from customers, 
-	orders,
-	agents
-	where agents.aid=orders.aid
-	and orders.cid=customers.cid;
+select distinct customers.name,
+       agents.name
+       from customers,
+            agents,
+            orders
+        where agents.city=customers.city
+        and agents.aid=orders.aid
+	  and customers.cid=orders.cid;
 
-
-select customers.name, customers.city
-from customers, 
-	orders,
-	agents
-	where agents.aid=orders.aid
-	and orders.cid=customers.cid;
-
+select distinct customers.name,
+                agents.name,
+                agents.city
+       		from customers,
+                     agents
+                 where agents.city=customers.city;
+                
 
 select name, city 
 from customers
@@ -54,6 +55,5 @@ where city in (select products.city
 		from products
 		order by products.quantity
 		limit 1);
-
 
 	
