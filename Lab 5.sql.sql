@@ -49,11 +49,13 @@ select distinct customers.name,
                  where agents.city=customers.city;
                 
 
-select name, city 
-from customers
-where city in (select products.city
-		from products
-		order by products.quantity
-		limit 1);
-
+select customers.name,
+       customers.city
+       from customers
+            where city in
+                       (select city
+                        from products
+                        group by city
+                        order by sum(quantity)
+                                limit 1)
 	
