@@ -1,0 +1,293 @@
+-- Kevin Bruce --
+  -- 4/11/13 --
+  
+  
+DROP TABLE IF EXISTS people; 
+DROP TABLE IF EXISTS engineers;
+DROP TABLE IF EXISTS Operators;
+DROP TABLE IF EXISTS astronauts; 
+DROP TABLE IF EXISTS crew; 
+DROP TABLE IF EXISTS spacecraft; 
+DROP TABLE IF EXISTS systems; 
+DROP TABLE IF EXISTS parts; 
+DROP TABLE IF EXISTS suppliers; 
+DROP TABLE IF EXISTS catalog;
+
+
+-- People -- 
+CREATE TABLE people ( 
+  pid               char(40) not null,    
+  firstName         varchar(20) not null,   
+  lastName          varchar(20) not null,  
+  age		    int not null, 
+  primary key(pid) 
+); 
+
+ 
+
+-- Operators -- 
+CREATE TABLE operators (   
+pid                char(40) not null references people(pid), 
+chairPreference    varchar(10) not null, 
+preferredDrink	   varchar(10) not null,
+primary key(pid) 
+); 
+
+
+-- Engineers -- 
+CREATE TABLE engineers (   
+pid               char(4) not null references people(pid), 
+highestDegree     varchar(25) not null,
+fovoriteVideoGame varchar(30) not null,
+primary key(pid) 
+); 
+
+
+
+-- Astronauts -- 
+CREATE TABLE astronauts ( 
+  pid           char(4) not null references people(pid),
+  yearsFlying   int not null,
+  golfHandicap  decimal not null,  
+  primary key(pid) 
+);  
+
+ 
+-- Spacecraft -- 
+CREATE TABLE spacecraft ( 
+  tailnumber     char(10) not null, 
+  name           char(20) not null,   
+  weightinTons	 int not null,
+  fuelType       char(20) not null,
+  crewCapacity   int not null,
+  primary key(tailnumber) 
+);
+
+
+-- Crew -- 
+CREATE TABLE crew ( 
+  pid         char(40) not null references people(pid),  
+  tailnumber  char(10) not null references spacecraft(tailnumber),
+  primary key(pid,tailnumber) 
+);
+
+ 
+-- Systems -- 
+CREATE TABLE systems ( 
+  sid      	    char(10) not null,  
+  name     	    varchar(20) not null, 
+  description 	    varchar(100) not null,
+primary key(sid)  
+); 
+
+ 
+ 
+-- Parts -- 
+CREATE TABLE parts (   
+  partsid	    char(10) not null,  
+  name     	    varchar(20) not null, 
+  description 	    varchar(100) not null,
+ primary key(partsid) 
+); 
+
+
+ 
+-- Suppliers -- 
+CREATE TABLE suppliers (
+  suppliersid       char(15) not null,  
+  name  	    varchar(20) not null,
+  address	    varchar(40) not null,     
+  paymentterms 	    char(50) not null,
+ primary key(suppliersid)
+); 
+
+
+  
+-- Catalog --  
+CREATE TABLE catalog (   
+  partsid      	      char(10) not null references parts(partsid),  
+  suppliersid             char(15) not null references suppliers(suppliersid),   
+  primary key(partsid, suppliersid) 
+);
+
+
+
+
+-- People --
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p001', 'Charles', 'Camarda', 35); 
+ 
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p002', 'Frank', 'Borman', 33); 
+ 
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p003', 'Daniel', 'Bursch ', 34); 
+ 
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p004', 'Yvonne', 'Cagle', 33); 
+ 
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p005', 'Vance', 'Brand', 41); 
+ 
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p006', 'John', 'Blaha', 39); 
+ 
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p007', 'Roy', 'Bridges', 30); 
+
+INSERT INTO people( pid, firstName, lastName, age) 
+  VALUES('p008', 'James', 'Buchli', 35); 
+
+INSERT INTO people( pid, firstName, lastName, age)
+  VALUES('p009', 'John', 'Casper', 31);
+
+ INSERT INTO people( pid, firstName, lastName, age)
+  VALUES('p010', 'Robert', 'Curbeam', 38);
+ 
+INSERT INTO people( pid, firstName, lastName, age)
+  VALUES('p011', 'Dirk', 'Frimout', 40); 
+ 
+ 
+
+
+-- Operators -- 
+INSERT INTO operators( pid, chairPreference ,  preferredDrink ) 
+  VALUES('p002', 'Captain', 'Tickler' ); 
+ 
+INSERT INTO operators( pid, chairPreference ,  preferredDrink ) 
+  VALUES('p006', 'Commander', 'Brandy' ); 
+
+
+
+
+-- Engineers -- 
+INSERT INTO engineers( pid, highestDegree, fovoriteVideoGame ) 
+  VALUES('p003', 'masters degree', 'mario cart' ); 
+ 
+INSERT INTO engineers( pid, highestDegree, fovoriteVideoGame )  
+  VALUES('p005', 'doctors degree', 'super smash bros' ); 
+ 
+INSERT INTO engineers( pid, highestDegree, fovoriteVideoGame )  
+  VALUES('p007', 'masters degree', 'prince of persia' );
+
+
+
+
+-- Astronauts -- 
+INSERT INTO astronauts( pid, yearsFlying, golfHandicap ) 
+  VALUES('p001', 10, 21.6025); 
+ 
+INSERT INTO astronauts( pid, yearsFlying, golfHandicap )
+  VALUES('p004', 5, 19.781); 
+ 
+INSERT INTO astronauts( pid, yearsFlying, golfHandicap ) 
+  VALUES('p008', 7, 24.5062);  
+
+-- Spacecraft -- 
+INSERT INTO spacecraft( tailnumber, name, weightinTons, fuelType, crewCapacity ) 
+  VALUES('N234AA', 'Death Star', 2500, 'Liquid Hydrogen', 5 ); 
+ 
+INSERT INTO spacecraft( tailnumber, name, weightinTons, fuelType, crewCapacity )   
+  VALUES('N256AA', 'Ebon Hawk', 2030, 'liquid Hydrogen',  6 ); 
+ 
+INSERT INTO spacecraft( tailnumber, name, weightinTons, fuelType, crewCapacity )    
+  VALUES('N240AA', 'Outrider', 2210, 'liquid Hydrogen', 4 ); 
+
+
+-- Crew --
+INSERT INTO crew( pid, tailnumber) 
+  VALUES('p009', 'N234AA'); 
+ 
+INSERT INTO crew( pid, tailnumber)   
+  VALUES('p010', 'N240AA'); 
+ 
+INSERT INTO crew( pid, tailnumber) 
+  VALUES('p011', 'N256AA'); 
+
+
+-- Systems -- 
+INSERT INTO systems( sid, name, description ) 
+  VALUES('s003', 'Electrical Power', 'for providing electricity to the spacecraft'); 
+ 
+INSERT INTO systems( sid, name, description )  
+VALUES('s011', 'Antennas', 'for sending and receiving data'); 
+ 
+INSERT INTO systems( sid, name, description )
+VALUES('s012', 'Control Systems', 'for helping to guide the spacecraft to its destination and for keeping it oriented correctly'); 
+ 
+
+
+ 
+-- Parts --
+INSERT INTO parts( partsid, name, description ) 
+  VALUES('parts001', 'Engines', 'provide the thrust to lift the Orbiter off the ground for the initial ascent'); 
+ 
+INSERT INTO parts( partsid, name, description )  
+VALUES('parts002', 'Nozzle', 'control the direction or characteristics of a fluid flow, especially to increase velocity'); 
+ 
+INSERT INTO parts( partsid, name, description )
+VALUES('parts003', 'Propellant', 'propellants are used to produce a gas that can be directed through a nozzle'); 
+  
+-- Suppliers -- 
+INSERT INTO suppliers( suppliersid, name, address, paymentterms ) 
+  VALUES('suppliers001', 'Ben', 'Nelson ave', 'within 30 days by cheque or money transfer'); 
+ 
+INSERT INTO suppliers( suppliersid, name, address, paymentterms )
+  VALUES('suppliers002', 'Ken', 'Parks st', 'within 10 days by cheque or money transfer'); 
+ 
+INSERT INTO suppliers( suppliersid, name, address, paymentterms ) 
+  VALUES('suppliers003', 'Nick', 'University ave', 'within 50 days by cheque or money transfer'); 
+ 
+
+
+-- Catalog -- 
+INSERT INTO catalog( partsid, suppliersid ) 
+  VALUES('parts003', 'suppliers001'); 
+ 
+INSERT INTO catalog( partsid, suppliersid ) 
+  VALUES('parts001', 'suppliers002'); 
+ 
+INSERT INTO catalog( partsid, suppliersid )
+  VALUES('parts002', 'suppliers003');
+
+  
+  
+
+select *  
+from people; 
+ 
+select *  
+from engineers; 
+
+select *  
+from operators;
+
+select *  
+from astronauts;  
+
+select *  
+from spacecraft; 
+
+select *  
+from crew;
+
+select *  
+from systems;   
+
+select *  
+from parts; 
+
+select *  
+from suppliers; 
+
+select *  
+from Catalog;
+
+
+
+--- A little Test Data ---
+select firstName, LastName 
+   from people 
+  where pid in ( select pid  	 	 	
+		from astronauts  	 	 	                                     
+		 where yearsFlying = 7 );
